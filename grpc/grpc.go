@@ -2,24 +2,10 @@ package grpc
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"os"
-	"strings"
-	"time"
 
-	"crypto/tls"
-	"crypto/x509"
-
-	"github.com/hashicorp/go-multierror"
 	"github.com/ktr0731/evans/grpc/grpcreflection"
-	"github.com/ktr0731/evans/logger"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/connectivity"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -116,160 +102,55 @@ type client struct {
 // If one of it is not found, NewClient returns ErrMutualAuthParamsAreNotEnough.
 // If useTLS is false, cacert, cert and certKey are ignored.
 func NewClient(addr, serverName string, useReflection, useTLS bool, cacert, cert, certKey string, headers map[string][]string) (Client, error) {
-	var opts []grpc.DialOption
-	if !useTLS {
-		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	} else { // Enable TLS authentication
-		var tlsCfg tls.Config
-		if cacert != "" {
-			b, err := os.ReadFile(cacert)
-			if err != nil {
-				return nil, errors.Wrap(err, "failed to read the CA certificate")
-			}
-			cp := x509.NewCertPool()
-			if !cp.AppendCertsFromPEM(b) {
-				return nil, errors.New("failed to append the client certificate")
-			}
-			tlsCfg.RootCAs = cp
-		}
-		if cert != "" && certKey != "" {
-			// Enable mutual authentication
-			certificate, err := tls.LoadX509KeyPair(cert, certKey)
-			if err != nil {
-				return nil, errors.Wrap(err, "failed to read the client certificate")
-			}
-			tlsCfg.Certificates = append(tlsCfg.Certificates, certificate)
-		} else if cert != "" || certKey != "" {
-			return nil, ErrMutualAuthParamsAreNotEnough
-		}
-
-		creds := credentials.NewTLS(&tlsCfg)
-		opts = append(opts, grpc.WithTransportCredentials(creds))
-
-		if serverName != "" {
-			opts = append(opts, grpc.WithAuthority(serverName))
-		}
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
-	defer cancel()
-	conn, err := grpc.DialContext(ctx, addr, opts...)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to dial to gRPC server")
-	}
-
-	client := &client{
-		conn:    conn,
-		headers: Headers{},
-	}
-
-	if useReflection {
-		client.Client = grpcreflection.NewClient(conn, headers)
-	}
-
-	return client, nil
+	_ = "STUB: not implemented"
+	return *new(Client), nil
 }
+
+// Enable TLS authentication
+
+// Enable mutual authentication
 
 func (c *client) Invoke(ctx context.Context, fqrn string, req, res interface{}) (header, trailer metadata.MD, _ error) {
-	logger.Scriptln(func() []interface{} {
-		md, ok := metadata.FromOutgoingContext(ctx)
-		if !ok {
-			return nil
-		}
-		return []interface{}{md}
-	})
-
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, nil, err
-	}
-	loggingRequest(req)
-	wakeUpClientConn(c.conn)
-	opts := []grpc.CallOption{grpc.Header(&header), grpc.Trailer(&trailer)}
-	err = c.conn.Invoke(ctx, endpoint, req, res, opts...)
-	return header, trailer, err
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), *new(metadata.MD), nil
 }
 
-func (c *client) Close(ctx context.Context) error {
-	doneCh := make(chan error)
-	go func() {
-		var result error
-		if c.Client != nil {
-			c.Client.Reset()
-		}
-		if err := c.conn.Close(); err != nil {
-			result = multierror.Append(result, errors.Wrap(err, "failed to close gRPC client"))
-		}
-		doneCh <- result
-	}()
+func (c *client) Close(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	select {
-	case <-ctx.Done():
-		return nil
-	case err := <-doneCh:
-		return err
-	}
-}
-
-func (c *client) Header() Headers {
-	return c.headers
-}
+func (c *client) Header() Headers { _ = "STUB: not implemented"; return *new(Headers) }
 
 type clientStream struct {
 	cs grpc.ClientStream
 }
 
 func (s *clientStream) Header() (metadata.MD, error) {
-	return s.cs.Header()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), nil
 }
 
-func (s *clientStream) Trailer() metadata.MD {
-	return s.cs.Trailer()
-}
+func (s *clientStream) Trailer() metadata.MD { _ = "STUB: not implemented"; return *new(metadata.MD) }
 
-func (s *clientStream) Send(req interface{}) error {
-	loggingRequest(req)
-	return s.cs.SendMsg(req)
-}
+func (s *clientStream) Send(req interface{}) error { _ = "STUB: not implemented"; return nil }
 
 func (s *clientStream) CloseAndReceive(res interface{}) error {
-	if err := s.cs.CloseSend(); err != nil {
-		return errors.Wrap(err, "failed to close client stream")
-	}
-
-	err := s.cs.RecvMsg(res)
-	if err != nil && err != io.EOF {
-		return errors.Wrap(err, "failed to close and receive response")
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (c *client) NewClientStream(ctx context.Context, streamDesc *grpc.StreamDesc, fqrn string) (ClientStream, error) {
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to convert fqrn to endpoint")
-	}
-	wakeUpClientConn(c.conn)
-	cs, err := c.conn.NewStream(ctx, streamDesc, endpoint)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to instantiate gRPC stream")
-	}
-	return &clientStream{cs}, nil
+	_ = "STUB: not implemented"
+	return *new(ClientStream), nil
 }
 
 type serverStream struct {
 	*clientStream
 }
 
-func (s *serverStream) Receive(res interface{}) error {
-	return s.cs.RecvMsg(res)
-}
+func (s *serverStream) Receive(res interface{}) error { _ = "STUB: not implemented"; return nil }
 
 func (c *client) NewServerStream(ctx context.Context, streamDesc *grpc.StreamDesc, fqrn string) (ServerStream, error) {
-	s, err := c.NewClientStream(ctx, streamDesc, fqrn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create server stream")
-	}
-	return &serverStream{s.(*clientStream)}, nil
+	_ = "STUB: not implemented"
+	return *new(ServerStream), nil
 }
 
 type bidiStream struct {
@@ -277,32 +158,21 @@ type bidiStream struct {
 }
 
 func (s *bidiStream) Header() (metadata.MD, error) {
-	return s.s.Header()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), nil
 }
 
-func (s *bidiStream) Trailer() metadata.MD {
-	return s.s.Trailer()
-}
+func (s *bidiStream) Trailer() metadata.MD { _ = "STUB: not implemented"; return *new(metadata.MD) }
 
-func (s *bidiStream) Send(req interface{}) error {
-	loggingRequest(req)
-	return s.s.cs.SendMsg(req)
-}
+func (s *bidiStream) Send(req interface{}) error { _ = "STUB: not implemented"; return nil }
 
-func (s *bidiStream) Receive(res interface{}) error {
-	return s.s.cs.RecvMsg(res)
-}
+func (s *bidiStream) Receive(res interface{}) error { _ = "STUB: not implemented"; return nil }
 
-func (s *bidiStream) CloseSend() error {
-	return s.s.cs.CloseSend()
-}
+func (s *bidiStream) CloseSend() error { _ = "STUB: not implemented"; return nil }
 
 func (c *client) NewBidiStream(ctx context.Context, streamDesc *grpc.StreamDesc, fqrn string) (BidiStream, error) {
-	s, err := c.NewServerStream(ctx, streamDesc, fqrn)
-	if err != nil {
-		return nil, err
-	}
-	return &bidiStream{s.(*serverStream)}, nil
+	_ = "STUB: not implemented"
+	return *new(BidiStream), nil
 }
 
 // fqrnToEndpoint converts FullQualifiedRPCName to endpoint
@@ -310,28 +180,10 @@ func (c *client) NewBidiStream(ctx context.Context, streamDesc *grpc.StreamDesc,
 // e.g.
 //
 //	pkg_name.svc_name.rpc_name -> /pkg_name.svc_name/rpc_name
-func fqrnToEndpoint(fqrn string) (string, error) {
-	sp := strings.Split(fqrn, ".")
-	// FQRN should contain at least service and rpc name.
-	if len(sp) < 2 {
-		return "", errors.New("invalid FQRN format")
-	}
+func fqrnToEndpoint(fqrn string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-	return fmt.Sprintf("/%s/%s", strings.Join(sp[:len(sp)-1], "."), sp[len(sp)-1]), nil
-}
+// FQRN should contain at least service and rpc name.
 
-func wakeUpClientConn(conn *grpc.ClientConn) {
-	if conn.GetState() == connectivity.TransientFailure {
-		conn.ResetConnectBackoff()
-	}
-}
+func wakeUpClientConn(conn *grpc.ClientConn) { _ = "STUB: not implemented"; return }
 
-func loggingRequest(req interface{}) {
-	logger.Scriptln(func() []interface{} {
-		b, err := json.MarshalIndent(&req, "", "  ")
-		if err != nil {
-			return nil
-		}
-		return []interface{}{"request:\n" + string(b)}
-	})
-}
+func loggingRequest(req interface{}) { _ = "STUB: not implemented"; return }

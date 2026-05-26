@@ -1,35 +1,20 @@
 package usecase
 
 import (
-	"strings"
-
 	"github.com/ktr0731/evans/grpc"
-	"github.com/ktr0731/evans/logger"
 )
 
-func AddHeader(k, v string) {
-	dm.AddHeader(k, v)
-}
-func (m *dependencyManager) AddHeader(k, v string) {
-	if strings.ToLower(k) == "user-agent" {
-		logger.Println(`warning: cannot add a header named "user-agent"`)
-		return
-	}
-	if err := m.gRPCClient.Header().Add(k, v); err != nil {
-		logger.Printf("failed to add a header %s=%s: %s", k, v, err)
-	}
-}
+func AddHeader(k, v string) { _ = "STUB: not implemented"; return }
 
-func RemoveHeader(k string) {
-	dm.RemoveHeader(k)
-}
-func (m *dependencyManager) RemoveHeader(k string) {
-	m.gRPCClient.Header().Remove(k)
-}
+func (m *dependencyManager) AddHeader(k, v string) { _ = "STUB: not implemented"; return }
 
-func ListHeaders() grpc.Headers {
-	return dm.ListHeaders()
-}
+func RemoveHeader(k string) { _ = "STUB: not implemented"; return }
+
+func (m *dependencyManager) RemoveHeader(k string) { _ = "STUB: not implemented"; return }
+
+func ListHeaders() grpc.Headers { _ = "STUB: not implemented"; return *new(grpc.Headers) }
+
 func (m *dependencyManager) ListHeaders() grpc.Headers {
-	return m.gRPCClient.Header()
+	_ = "STUB: not implemented"
+	return *new(grpc.Headers)
 }

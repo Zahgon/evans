@@ -4,8 +4,9 @@
 package main
 
 import (
-	"github.com/ktr0731/evans/prompt"
 	"sync"
+
+	"github.com/ktr0731/evans/prompt"
 )
 
 // Ensure, that PromptMock does implement prompt.Prompt.
@@ -14,34 +15,34 @@ var _ prompt.Prompt = &PromptMock{}
 
 // PromptMock is a mock implementation of prompt.Prompt.
 //
-// 	func TestSomethingThatUsesPrompt(t *testing.T) {
+//	func TestSomethingThatUsesPrompt(t *testing.T) {
 //
-// 		// make and configure a mocked prompt.Prompt
-// 		mockedPrompt := &PromptMock{
-// 			GetCommandHistoryFunc: func() []string {
-// 				panic("mock out the GetCommandHistory method")
-// 			},
-// 			InputFunc: func() (string, error) {
-// 				panic("mock out the Input method")
-// 			},
-// 			SelectFunc: func(message string, options []string) (int, string, error) {
-// 				panic("mock out the Select method")
-// 			},
-// 			SetCompleterFunc: func(c prompt.Completer)  {
-// 				panic("mock out the SetCompleter method")
-// 			},
-// 			SetPrefixFunc: func(prefix string)  {
-// 				panic("mock out the SetPrefix method")
-// 			},
-// 			SetPrefixColorFunc: func(color prompt.Color)  {
-// 				panic("mock out the SetPrefixColor method")
-// 			},
-// 		}
+//		// make and configure a mocked prompt.Prompt
+//		mockedPrompt := &PromptMock{
+//			GetCommandHistoryFunc: func() []string {
+//				panic("mock out the GetCommandHistory method")
+//			},
+//			InputFunc: func() (string, error) {
+//				panic("mock out the Input method")
+//			},
+//			SelectFunc: func(message string, options []string) (int, string, error) {
+//				panic("mock out the Select method")
+//			},
+//			SetCompleterFunc: func(c prompt.Completer)  {
+//				panic("mock out the SetCompleter method")
+//			},
+//			SetPrefixFunc: func(prefix string)  {
+//				panic("mock out the SetPrefix method")
+//			},
+//			SetPrefixColorFunc: func(color prompt.Color)  {
+//				panic("mock out the SetPrefixColor method")
+//			},
+//		}
 //
-// 		// use mockedPrompt in code that requires prompt.Prompt
-// 		// and then make assertions.
+//		// use mockedPrompt in code that requires prompt.Prompt
+//		// and then make assertions.
 //
-// 	}
+//	}
 type PromptMock struct {
 	// GetCommandHistoryFunc mocks the GetCommandHistory method.
 	GetCommandHistoryFunc func() []string
@@ -101,181 +102,87 @@ type PromptMock struct {
 }
 
 // GetCommandHistory calls GetCommandHistoryFunc.
-func (mock *PromptMock) GetCommandHistory() []string {
-	if mock.GetCommandHistoryFunc == nil {
-		panic("PromptMock.GetCommandHistoryFunc: method is nil but Prompt.GetCommandHistory was just called")
-	}
-	callInfo := struct {
-	}{}
-	mock.lockGetCommandHistory.Lock()
-	mock.calls.GetCommandHistory = append(mock.calls.GetCommandHistory, callInfo)
-	mock.lockGetCommandHistory.Unlock()
-	return mock.GetCommandHistoryFunc()
-}
+func (mock *PromptMock) GetCommandHistory() []string { _ = "STUB: not implemented"; return nil }
 
 // GetCommandHistoryCalls gets all the calls that were made to GetCommandHistory.
 // Check the length with:
-//     len(mockedPrompt.GetCommandHistoryCalls())
+//
+//	len(mockedPrompt.GetCommandHistoryCalls())
 func (mock *PromptMock) GetCommandHistoryCalls() []struct {
 } {
-	var calls []struct {
-	}
-	mock.lockGetCommandHistory.RLock()
-	calls = mock.calls.GetCommandHistory
-	mock.lockGetCommandHistory.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Input calls InputFunc.
-func (mock *PromptMock) Input() (string, error) {
-	if mock.InputFunc == nil {
-		panic("PromptMock.InputFunc: method is nil but Prompt.Input was just called")
-	}
-	callInfo := struct {
-	}{}
-	mock.lockInput.Lock()
-	mock.calls.Input = append(mock.calls.Input, callInfo)
-	mock.lockInput.Unlock()
-	return mock.InputFunc()
-}
+func (mock *PromptMock) Input() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // InputCalls gets all the calls that were made to Input.
 // Check the length with:
-//     len(mockedPrompt.InputCalls())
+//
+//	len(mockedPrompt.InputCalls())
 func (mock *PromptMock) InputCalls() []struct {
 } {
-	var calls []struct {
-	}
-	mock.lockInput.RLock()
-	calls = mock.calls.Input
-	mock.lockInput.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Select calls SelectFunc.
 func (mock *PromptMock) Select(message string, options []string) (int, string, error) {
-	if mock.SelectFunc == nil {
-		panic("PromptMock.SelectFunc: method is nil but Prompt.Select was just called")
-	}
-	callInfo := struct {
-		Message string
-		Options []string
-	}{
-		Message: message,
-		Options: options,
-	}
-	mock.lockSelect.Lock()
-	mock.calls.Select = append(mock.calls.Select, callInfo)
-	mock.lockSelect.Unlock()
-	return mock.SelectFunc(message, options)
+	_ = "STUB: not implemented"
+	return 0, "", nil
 }
 
 // SelectCalls gets all the calls that were made to Select.
 // Check the length with:
-//     len(mockedPrompt.SelectCalls())
+//
+//	len(mockedPrompt.SelectCalls())
 func (mock *PromptMock) SelectCalls() []struct {
 	Message string
 	Options []string
 } {
-	var calls []struct {
-		Message string
-		Options []string
-	}
-	mock.lockSelect.RLock()
-	calls = mock.calls.Select
-	mock.lockSelect.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetCompleter calls SetCompleterFunc.
-func (mock *PromptMock) SetCompleter(c prompt.Completer) {
-	if mock.SetCompleterFunc == nil {
-		panic("PromptMock.SetCompleterFunc: method is nil but Prompt.SetCompleter was just called")
-	}
-	callInfo := struct {
-		C prompt.Completer
-	}{
-		C: c,
-	}
-	mock.lockSetCompleter.Lock()
-	mock.calls.SetCompleter = append(mock.calls.SetCompleter, callInfo)
-	mock.lockSetCompleter.Unlock()
-	mock.SetCompleterFunc(c)
-}
+func (mock *PromptMock) SetCompleter(c prompt.Completer) { _ = "STUB: not implemented"; return }
 
 // SetCompleterCalls gets all the calls that were made to SetCompleter.
 // Check the length with:
-//     len(mockedPrompt.SetCompleterCalls())
+//
+//	len(mockedPrompt.SetCompleterCalls())
 func (mock *PromptMock) SetCompleterCalls() []struct {
 	C prompt.Completer
 } {
-	var calls []struct {
-		C prompt.Completer
-	}
-	mock.lockSetCompleter.RLock()
-	calls = mock.calls.SetCompleter
-	mock.lockSetCompleter.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPrefix calls SetPrefixFunc.
-func (mock *PromptMock) SetPrefix(prefix string) {
-	if mock.SetPrefixFunc == nil {
-		panic("PromptMock.SetPrefixFunc: method is nil but Prompt.SetPrefix was just called")
-	}
-	callInfo := struct {
-		Prefix string
-	}{
-		Prefix: prefix,
-	}
-	mock.lockSetPrefix.Lock()
-	mock.calls.SetPrefix = append(mock.calls.SetPrefix, callInfo)
-	mock.lockSetPrefix.Unlock()
-	mock.SetPrefixFunc(prefix)
-}
+func (mock *PromptMock) SetPrefix(prefix string) { _ = "STUB: not implemented"; return }
 
 // SetPrefixCalls gets all the calls that were made to SetPrefix.
 // Check the length with:
-//     len(mockedPrompt.SetPrefixCalls())
+//
+//	len(mockedPrompt.SetPrefixCalls())
 func (mock *PromptMock) SetPrefixCalls() []struct {
 	Prefix string
 } {
-	var calls []struct {
-		Prefix string
-	}
-	mock.lockSetPrefix.RLock()
-	calls = mock.calls.SetPrefix
-	mock.lockSetPrefix.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPrefixColor calls SetPrefixColorFunc.
-func (mock *PromptMock) SetPrefixColor(color prompt.Color) {
-	if mock.SetPrefixColorFunc == nil {
-		panic("PromptMock.SetPrefixColorFunc: method is nil but Prompt.SetPrefixColor was just called")
-	}
-	callInfo := struct {
-		Color prompt.Color
-	}{
-		Color: color,
-	}
-	mock.lockSetPrefixColor.Lock()
-	mock.calls.SetPrefixColor = append(mock.calls.SetPrefixColor, callInfo)
-	mock.lockSetPrefixColor.Unlock()
-	mock.SetPrefixColorFunc(color)
-}
+func (mock *PromptMock) SetPrefixColor(color prompt.Color) { _ = "STUB: not implemented"; return }
 
 // SetPrefixColorCalls gets all the calls that were made to SetPrefixColor.
 // Check the length with:
-//     len(mockedPrompt.SetPrefixColorCalls())
+//
+//	len(mockedPrompt.SetPrefixColorCalls())
 func (mock *PromptMock) SetPrefixColorCalls() []struct {
 	Color prompt.Color
 } {
-	var calls []struct {
-		Color prompt.Color
-	}
-	mock.lockSetPrefixColor.RLock()
-	calls = mock.calls.SetPrefixColor
-	mock.lockSetPrefixColor.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }

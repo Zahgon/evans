@@ -1,3 +1,4 @@
+//go:build dev
 // +build dev
 
 // means_dev.go treats the default means for updating to a dummy. To enable dev build, run the following command.
@@ -13,7 +14,6 @@ package app
 import (
 	"context"
 	"os"
-	"time"
 
 	"github.com/hashicorp/go-version"
 	"github.com/ktr0731/evans/cache"
@@ -52,19 +52,19 @@ type dummyMeans struct {
 	updater.Means
 }
 
-func (m *dummyMeans) Installed(context.Context) bool {
-	return true
-}
+func (m *dummyMeans) Installed(context.Context) bool { _ = "STUB: not implemented"; return false }
 
 func (m *dummyMeans) Type() updater.MeansType {
-	return meansTypeDummy
+	_ = "STUB: not implemented"
+	return *new(updater.MeansType)
 }
 
 func (m *dummyMeans) LatestTag(context.Context) (*version.Version, error) {
-	return version.NewSemver(dummyLatestVersion)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *dummyMeans) Update(context.Context, *version.Version) error {
-	time.Sleep(1 * time.Second)
+	_ = "STUB: not implemented"
 	return nil
 }

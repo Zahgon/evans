@@ -4,22 +4,6 @@ package usecase
 // UsePackage may return these errors:
 //
 //   - ErrUnknownPackageName: pkgName is not in loaded packages.
-//
-func UsePackage(pkgName string) error {
-	return dm.UsePackage(pkgName)
-}
-func (m *dependencyManager) UsePackage(pkgName string) error {
-	pkgs, err := ListPackages()
-	if err != nil {
-		return err
-	}
+func UsePackage(pkgName string) error { _ = "STUB: not implemented"; return nil }
 
-	for _, pkg := range pkgs {
-		if pkg == pkgName {
-			m.state.selectedPackage = pkgName
-			m.state.selectedService = ""
-			return nil
-		}
-	}
-	return ErrUnknownPackageName
-}
+func (m *dependencyManager) UsePackage(pkgName string) error { _ = "STUB: not implemented"; return nil }

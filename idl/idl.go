@@ -10,7 +10,6 @@ package idl
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/ktr0731/evans/grpc"
 )
@@ -64,11 +63,6 @@ type Spec interface {
 
 // FullyQualifiedMethodName returns the fully-qualified method joined with '.'.
 func FullyQualifiedMethodName(fqsn, methodName string) (string, error) {
-	if fqsn == "" {
-		return "", errors.New("fqsn should not be empty")
-	}
-	if methodName == "" {
-		return "", errors.New("methodName should not be empty")
-	}
-	return strings.Join([]string{fqsn, methodName}, "."), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }

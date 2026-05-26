@@ -2,11 +2,9 @@ package grpc
 
 import (
 	"context"
-	"io"
 
 	"github.com/ktr0731/evans/grpc/grpcreflection"
 	"github.com/ktr0731/grpc-web-go-client/grpcweb"
-	"github.com/pkg/errors"
 	gogrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -19,32 +17,13 @@ type webClient struct {
 }
 
 func NewWebClient(addr string, useReflection, useTLS bool, cacert, cert, certKey string, headers Headers) Client {
-	conn, err := grpcweb.DialContext(addr)
-	if err != nil {
-		panic(err)
-	}
-	client := &webClient{
-		conn:    conn,
-		headers: Headers{},
-	}
-
-	if useReflection {
-		client.Client = grpcreflection.NewWebClient(conn, headers)
-	}
-
-	return client
+	_ = "STUB: not implemented"
+	return *new(Client)
 }
 
 func (c *webClient) Invoke(ctx context.Context, fqrn string, req, res interface{}) (header, trailer metadata.MD, _ error) {
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, nil, errors.Wrap(err, "grpc-web: failed to convert FQRN to endpoint")
-	}
-
-	loggingRequest(req)
-
-	err = c.conn.Invoke(ctx, endpoint, req, res, grpcweb.Header(&header), grpcweb.Trailer(&trailer))
-	return header, trailer, errors.Wrap(err, "grpc-web: failed to send a request")
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), *new(metadata.MD), nil
 }
 
 type webClientStream struct {
@@ -53,43 +32,25 @@ type webClientStream struct {
 }
 
 func (s *webClientStream) Header() (metadata.MD, error) {
-	return s.stream.Header()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), nil
 }
 
 func (s *webClientStream) Trailer() metadata.MD {
-	return s.stream.Trailer()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD)
 }
 
-func (s *webClientStream) Send(req interface{}) error {
-	loggingRequest(req)
-	if err := s.stream.Send(s.ctx, req); err != nil {
-		return errors.Wrap(err, "failed to send a request")
-	}
-	return nil
-}
+func (s *webClientStream) Send(req interface{}) error { _ = "STUB: not implemented"; return nil }
 
 func (s *webClientStream) CloseAndReceive(res interface{}) error {
-	err := s.stream.CloseAndReceive(s.ctx, res)
-	if err != nil {
-		return errors.Wrap(err, "failed to send CloseAndReceive")
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (c *webClient) NewClientStream(ctx context.Context, streamDesc *gogrpc.StreamDesc, fqrn string) (ClientStream, error) {
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to convert FQRN to endpoint")
-	}
-
-	stream, err := c.conn.NewClientStream(streamDesc, endpoint)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create a new client stream")
-	}
-	return &webClientStream{
-		ctx:    ctx,
-		stream: stream,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(ClientStream), nil
 }
 
 type webServerStream struct {
@@ -98,44 +59,22 @@ type webServerStream struct {
 }
 
 func (s *webServerStream) Header() (metadata.MD, error) {
-	return s.stream.Header()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), nil
 }
 
 func (s *webServerStream) Trailer() metadata.MD {
-	return s.stream.Trailer()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD)
 }
 
-func (s *webServerStream) Send(req interface{}) (err error) {
-	loggingRequest(req)
-	if err := s.stream.Send(s.ctx, req); err != nil {
-		return errors.Wrap(err, "failed to send a request")
-	}
-	return nil
-}
+func (s *webServerStream) Send(req interface{}) (err error) { _ = "STUB: not implemented"; return nil }
 
-func (s *webServerStream) Receive(res interface{}) error {
-	if s.stream == nil {
-		return errors.New("Receive must be call after Send method")
-	}
-	err := s.stream.Receive(s.ctx, res)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+func (s *webServerStream) Receive(res interface{}) error { _ = "STUB: not implemented"; return nil }
 
 func (c *webClient) NewServerStream(ctx context.Context, streamDesc *gogrpc.StreamDesc, fqrn string) (ServerStream, error) {
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to convert FQRN to endpoint")
-	}
-
-	stream, err := c.conn.NewServerStream(streamDesc, endpoint)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create a new server stream")
-	}
-
-	return &webServerStream{ctx: ctx, stream: stream}, nil
+	_ = "STUB: not implemented"
+	return *new(ServerStream), nil
 }
 
 type webBidiStream struct {
@@ -144,63 +83,23 @@ type webBidiStream struct {
 }
 
 func (s *webBidiStream) Header() (metadata.MD, error) {
-	return s.stream.Header()
+	_ = "STUB: not implemented"
+	return *new(metadata.MD), nil
 }
 
-func (s *webBidiStream) Trailer() metadata.MD {
-	return s.stream.Trailer()
-}
+func (s *webBidiStream) Trailer() metadata.MD { _ = "STUB: not implemented"; return *new(metadata.MD) }
 
-func (s *webBidiStream) Send(req interface{}) error {
-	loggingRequest(req)
-	if err := s.stream.Send(s.ctx, req); err != nil {
-		return errors.Wrap(err, "failed to send a request")
-	}
-	return nil
-}
+func (s *webBidiStream) Send(req interface{}) error { _ = "STUB: not implemented"; return nil }
 
-func (s *webBidiStream) Receive(res interface{}) error {
-	err := s.stream.Receive(s.ctx, res)
-	if errors.Is(err, io.EOF) {
-		return io.EOF
-	}
-	if err != nil {
-		return errors.Wrap(err, "failed to receive a response")
-	}
-	return nil
-}
+func (s *webBidiStream) Receive(res interface{}) error { _ = "STUB: not implemented"; return nil }
 
-func (s *webBidiStream) CloseSend() error {
-	if err := s.stream.CloseSend(); err != nil {
-		return errors.Wrap(err, "failed to close the send stream")
-	}
-	return nil
-}
+func (s *webBidiStream) CloseSend() error { _ = "STUB: not implemented"; return nil }
 
 func (c *webClient) NewBidiStream(ctx context.Context, streamDesc *gogrpc.StreamDesc, fqrn string) (BidiStream, error) {
-	endpoint, err := fqrnToEndpoint(fqrn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to convert FQRN to endpoint")
-	}
-
-	stream, err := c.conn.NewBidiStream(streamDesc, endpoint)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create a new bidi stream")
-	}
-
-	return &webBidiStream{
-		ctx:    ctx,
-		stream: stream,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(BidiStream), nil
 }
 
-func (c *webClient) Close(ctx context.Context) error {
-	if c.Client != nil {
-		c.Client.Reset()
-	}
-	return nil
-}
+func (c *webClient) Close(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (c *webClient) Header() Headers {
-	return c.headers
-}
+func (c *webClient) Header() Headers { _ = "STUB: not implemented"; return *new(Headers) }

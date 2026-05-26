@@ -4,8 +4,9 @@
 package proto
 
 import (
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"sync"
+
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // Ensure, that DescriptorSourceMock does implement DescriptorSource.
@@ -54,18 +55,8 @@ type DescriptorSourceMock struct {
 
 // FindSymbol calls FindSymbolFunc.
 func (mock *DescriptorSourceMock) FindSymbol(name string) (protoreflect.Descriptor, error) {
-	if mock.FindSymbolFunc == nil {
-		panic("DescriptorSourceMock.FindSymbolFunc: method is nil but DescriptorSource.FindSymbol was just called")
-	}
-	callInfo := struct {
-		Name string
-	}{
-		Name: name,
-	}
-	mock.lockFindSymbol.Lock()
-	mock.calls.FindSymbol = append(mock.calls.FindSymbol, callInfo)
-	mock.lockFindSymbol.Unlock()
-	return mock.FindSymbolFunc(name)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Descriptor), nil
 }
 
 // FindSymbolCalls gets all the calls that were made to FindSymbol.
@@ -75,26 +66,14 @@ func (mock *DescriptorSourceMock) FindSymbol(name string) (protoreflect.Descript
 func (mock *DescriptorSourceMock) FindSymbolCalls() []struct {
 	Name string
 } {
-	var calls []struct {
-		Name string
-	}
-	mock.lockFindSymbol.RLock()
-	calls = mock.calls.FindSymbol
-	mock.lockFindSymbol.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ListServices calls ListServicesFunc.
 func (mock *DescriptorSourceMock) ListServices() ([]string, error) {
-	if mock.ListServicesFunc == nil {
-		panic("DescriptorSourceMock.ListServicesFunc: method is nil but DescriptorSource.ListServices was just called")
-	}
-	callInfo := struct {
-	}{}
-	mock.lockListServices.Lock()
-	mock.calls.ListServices = append(mock.calls.ListServices, callInfo)
-	mock.lockListServices.Unlock()
-	return mock.ListServicesFunc()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ListServicesCalls gets all the calls that were made to ListServices.
@@ -103,10 +82,6 @@ func (mock *DescriptorSourceMock) ListServices() ([]string, error) {
 //	len(mockedDescriptorSource.ListServicesCalls())
 func (mock *DescriptorSourceMock) ListServicesCalls() []struct {
 } {
-	var calls []struct {
-	}
-	mock.lockListServices.RLock()
-	calls = mock.calls.ListServices
-	mock.lockListServices.RUnlock()
-	return calls
+	_ = "STUB: not implemented"
+	return nil
 }

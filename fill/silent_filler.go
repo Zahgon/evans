@@ -15,27 +15,10 @@ type SilentFiller struct {
 }
 
 // NewSilentFiller receives input as io.Reader and returns an instance of SilentFiller.
-func NewSilentFiller(in io.Reader) *SilentFiller {
-	return &SilentFiller{
-		dec: &protojson.UnmarshalOptions{
-			Resolver: nil, // TODO
-		},
-		in: json.NewDecoder(in),
-	}
-}
+func NewSilentFiller(in io.Reader) *SilentFiller { _ = "STUB: not implemented"; return nil }
+
+// TODO
 
 // Fill fills values of each field from a JSON string. If the JSON string is invalid JSON format or v is a nil pointer,
 // Fill returns ErrCodecMismatch.
-func (f *SilentFiller) Fill(v *dynamicpb.Message) error {
-	var in interface{}
-	if err := f.in.Decode(&in); err != nil {
-		return err
-	}
-
-	b, err := json.Marshal(in)
-	if err != nil {
-		return err
-	}
-
-	return f.dec.Unmarshal(b, v)
-}
+func (f *SilentFiller) Fill(v *dynamicpb.Message) error { _ = "STUB: not implemented"; return nil }

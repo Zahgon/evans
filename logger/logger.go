@@ -13,51 +13,23 @@ var (
 )
 
 // Reset resets all logging parameters.
-func Reset() {
-	defaultLogger = newDefaultLogger()
-	enabled = false
-}
+func Reset() { _ = "STUB: not implemented"; return }
 
 // SetOutput enables logging that writes out logs to w.
 // Note that SetOutput works only once. To perform SetOutput again, it is necessary to call Reset before it.
-func SetOutput(w io.Writer) {
-	if enabled {
-		Println("logger: ignored SetOutput because it is already called. please call Reset before calling again.")
-		return
-	}
-	enabled = true
-	defaultLogger.SetOutput(w)
-}
+func SetOutput(w io.Writer) { _ = "STUB: not implemented"; return }
 
 // Println provides fmt.Println like logging.
-func Println(v ...interface{}) {
-	defaultLogger.Println(v...)
-}
+func Println(v ...interface{}) { _ = "STUB: not implemented"; return }
 
 // Printf provides fmt.Printf like logging.
-func Printf(format string, v ...interface{}) {
-	defaultLogger.Printf(format, v...)
-}
+func Printf(format string, v ...interface{}) { _ = "STUB: not implemented"; return }
 
 // Scriptln receives a function f which executes something and returns some values as a slice of empty interfaces.
 // If logging is disabled, f is not executed.
-func Scriptln(f func() []interface{}) {
-	if !enabled {
-		return
-	}
-	args := f()
-	Println(args...)
-}
+func Scriptln(f func() []interface{}) { _ = "STUB: not implemented"; return }
 
 // Scriptf is similar with Scriptln, but for formatting output.
-func Scriptf(format string, f func() []interface{}) {
-	if !enabled {
-		return
-	}
-	args := f()
-	Printf(format, args...)
-}
+func Scriptf(format string, f func() []interface{}) { _ = "STUB: not implemented"; return }
 
-func newDefaultLogger() *log.Logger {
-	return log.New(io.Discard, "evans: ", 0)
-}
+func newDefaultLogger() *log.Logger { _ = "STUB: not implemented"; return nil }

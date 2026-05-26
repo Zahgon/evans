@@ -2,11 +2,7 @@
 package cui
 
 import (
-	"fmt"
 	"io"
-
-	"github.com/fatih/color"
-	colorable "github.com/mattn/go-colorable"
 )
 
 // UI provides formatted I/O interfaces.
@@ -22,15 +18,9 @@ type UI interface {
 
 // New creates a new UI with passed options.
 func New(opts ...Option) UI {
+	_ = "STUB: not implemented"
 	// Creates a new UI with stdin, stdout, stderr.
-	ui := &basicUI{
-		writer:    colorable.NewColorableStdout(),
-		errWriter: colorable.NewColorableStderr(),
-	}
-	for _, opt := range opts {
-		opt(ui)
-	}
-	return ui
+	return *new(UI)
 }
 
 type basicUI struct {
@@ -38,29 +28,27 @@ type basicUI struct {
 }
 
 // Output writes out the passed argument s to Writer with a line break.
-func (u *basicUI) Output(s string) {
-	fmt.Fprintln(u.writer, s)
-}
+func (u *basicUI) Output(s string) { _ = "STUB: not implemented"; return }
 
 // Info is the same as Output, but distinguish these for composition.
 func (u *basicUI) Info(s string) {
-	u.Output(s)
+	_ = "STUB: not implemented"
+
+	// Warn is the same as Output, but distinguish these for composition.
+	return
 }
 
-// Warn is the same as Output, but distinguish these for composition.
 func (u *basicUI) Warn(s string) {
-	u.Error(s)
+	_ = "STUB: not implemented"
+
+	// Error writes out the passed argument s to ErrWriter with a line break.
+	return
 }
 
-// Error writes out the passed argument s to ErrWriter with a line break.
-func (u *basicUI) Error(s string) {
-	fmt.Fprintln(u.errWriter, s)
-}
+func (u *basicUI) Error(s string) { _ = "STUB: not implemented"; return }
 
 // Writer returns an io.Writer which is used in u.
-func (u *basicUI) Writer() io.Writer {
-	return u.writer
-}
+func (u *basicUI) Writer() io.Writer { _ = "STUB: not implemented"; return *new(io.Writer) }
 
 type coloredUI struct {
 	UI
@@ -69,24 +57,13 @@ type coloredUI struct {
 // NewColored wraps provided `ui` with coloredUI.
 // If `ui` is *coloredUI, NewColored returns it as it is.
 // Colored output works fine in Windows environment.
-func NewColored(ui UI) UI {
-	if ui, ok := ui.(*coloredUI); ok {
-		return ui
-	}
-	return &coloredUI{ui}
-}
+func NewColored(ui UI) UI { _ = "STUB: not implemented"; return *new(UI) }
 
 // Info is the same as New, but colored.
-func (u *coloredUI) Info(s string) {
-	u.UI.Info(color.BlueString(s))
-}
+func (u *coloredUI) Info(s string) { _ = "STUB: not implemented"; return }
 
 // Warn is the same as New, but colored.
-func (u *coloredUI) Warn(s string) {
-	u.UI.Warn(color.YellowString(s))
-}
+func (u *coloredUI) Warn(s string) { _ = "STUB: not implemented"; return }
 
 // Error is the same as New, but colored.
-func (u *coloredUI) Error(s string) {
-	u.UI.Error(color.RedString(s))
-}
+func (u *coloredUI) Error(s string) { _ = "STUB: not implemented"; return }

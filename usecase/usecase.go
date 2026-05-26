@@ -59,50 +59,14 @@ type Dependencies struct {
 }
 
 // Inject corresponds an implementation to an interface type. Inject clears the previous states if it exists.
-func Inject(deps Dependencies) {
-	dm.Inject(deps)
-}
+func Inject(deps Dependencies) { _ = "STUB: not implemented"; return }
 
-func (m *dependencyManager) Inject(d Dependencies) {
-	dm = &dependencyManager{
-		descSource:        d.DescSource,
-		filler:            d.Filler,
-		interactiveFiller: d.InteractiveFiller,
-		gRPCClient:        d.GRPCClient,
-		responseFormatter: d.ResponseFormatter,
-		resourcePresenter: d.ResourcePresenter,
-
-		state: defaultState,
-	}
-}
+func (m *dependencyManager) Inject(d Dependencies) { _ = "STUB: not implemented"; return }
 
 // InjectPartially is almost same as the Inject, but injects only non-nil dependencies.
-func InjectPartially(deps Dependencies) {
-	dm.InjectPartially(deps)
-}
+func InjectPartially(deps Dependencies) { _ = "STUB: not implemented"; return }
 
-func (m *dependencyManager) InjectPartially(d Dependencies) {
-	if d.DescSource != nil {
-		m.descSource = d.DescSource
-	}
-	if d.Filler != nil {
-		m.filler = d.Filler
-	}
-	if d.InteractiveFiller != nil {
-		m.interactiveFiller = d.InteractiveFiller
-	}
-	if d.GRPCClient != nil {
-		m.gRPCClient = d.GRPCClient
-	}
-	if d.ResponseFormatter != nil {
-		m.responseFormatter = d.ResponseFormatter
-	}
-	if d.ResourcePresenter != nil {
-		m.resourcePresenter = d.ResourcePresenter
-	}
-}
+func (m *dependencyManager) InjectPartially(d Dependencies) { _ = "STUB: not implemented"; return }
 
 // Clear clears all dependencies and states. Usually, it is used for unit testing.
-func Clear() {
-	dm.Inject(Dependencies{})
-}
+func Clear() { _ = "STUB: not implemented"; return }

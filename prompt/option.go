@@ -6,8 +6,4 @@ type opt struct {
 
 type Option func(*opt)
 
-func WithCommandHistory(h []string) Option {
-	return func(o *opt) {
-		o.commandHistory = h
-	}
-}
+func WithCommandHistory(h []string) Option { _ = "STUB: not implemented"; return *new(Option) }

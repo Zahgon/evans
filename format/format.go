@@ -14,48 +14,30 @@ type ResponseFormatter struct {
 }
 
 func (f *ResponseFormatter) Format(s *status.Status, header, trailer metadata.MD, v interface{}) error {
-	f.FormatHeader(header)
-	if err := f.FormatMessage(v); err != nil {
-		return err
-	}
-	if err := f.FormatTrailer(s, trailer); err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (f *ResponseFormatter) FormatHeader(header metadata.MD) {
-	if f.enrich {
-		f.impl.FormatHeader(header)
-	}
-}
+func (f *ResponseFormatter) FormatHeader(header metadata.MD) { _ = "STUB: not implemented"; return }
 
 func (f *ResponseFormatter) FormatMessage(v interface{}) error {
-	if v == nil {
-		return nil
-	}
-	return f.impl.FormatMessage(v)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (f *ResponseFormatter) FormatTrailer(status *status.Status, trailer metadata.MD) error {
-	if f.enrich {
-		f.impl.FormatTrailer(trailer)
-		if err := f.impl.FormatStatus(status); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (f *ResponseFormatter) Done() error {
-	return f.impl.Done()
-}
+func (f *ResponseFormatter) Done() error { _ = "STUB: not implemented"; return nil }
 
 // NewResponseFormatter formats gRPC response with a specific formatter.
 // If enrich is false, the formatter prints only messages.
 // Or else, it prints all includes headers, messages, trailers and status.
 func NewResponseFormatter(f ResponseFormatterInterface, enrich bool) *ResponseFormatter {
-	return &ResponseFormatter{impl: f, enrich: enrich}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ResponseFormatterInterface is an interface for formatting gRPC response.

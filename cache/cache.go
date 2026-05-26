@@ -4,13 +4,11 @@ package cache
 import (
 	"io"
 	"os"
-	"path/filepath"
 
 	"github.com/ktr0731/evans/meta"
 	"github.com/ktr0731/go-updater"
 	"github.com/pelletier/go-toml"
 	"github.com/pkg/errors"
-	"github.com/zchee/go-xdgbasedir"
 )
 
 const defaultFileName = "cache.toml"
@@ -24,9 +22,7 @@ type UpdateInfo struct {
 	InstalledBy   MeansType `default:"" toml:"installedBy"`
 }
 
-func (i UpdateInfo) UpdateAvailable() bool {
-	return i.LatestVersion != ""
-}
+func (i UpdateInfo) UpdateAvailable() bool { _ = "STUB: not implemented"; return false }
 
 // Cache represents cached items.
 type Cache struct {
@@ -40,20 +36,7 @@ type Cache struct {
 
 // Save writes the receiver to the cache file. It returns an *os.PathError if it can't create a new cache file.
 // Also it returns an error if it failed to encode *Cache with TOML format.
-func (c *Cache) Save() error {
-	if c.SaveFunc != nil {
-		return c.SaveFunc()
-	}
-
-	p := resolvePath()
-
-	f, err := os.Create(p)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	return toml.NewEncoder(f).Encode(*c)
-}
+func (c *Cache) Save() error { _ = "STUB: not implemented"; return nil }
 
 var decodeTOML = func(r io.Reader, i interface{}) error {
 	return toml.NewDecoder(r).Decode(i)
@@ -99,22 +82,8 @@ var Get = func() (*Cache, error) { // Use variable for mocking from means_dev.go
 	return &c, nil
 }
 
-func resolvePath() string {
-	return filepath.Join(xdgbasedir.CacheHome(), meta.AppName, defaultFileName)
-}
+func resolvePath() string { _ = "STUB: not implemented"; return "" }
 
 // initCacheFile creates or overwrites a new cache file with default values.
 // If directories of the file are not found, initCacheFile also creates it.
-func initCacheFile(p string) error {
-	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
-		return err
-	}
-	f, err := os.Create(p)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	return toml.NewEncoder(f).Encode(Cache{
-		Version: meta.Version.String(),
-	})
-}
+func initCacheFile(p string) error { _ = "STUB: not implemented"; return nil }
